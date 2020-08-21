@@ -1,25 +1,30 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { Login } from './pages/Login';
+import { Terminals } from './pages/Terminals';
+import { Buyers } from './pages/Buyers';
+import { Navbar } from './components/Navbar'
+import { Alert } from './components/Alert';
+import { AlertState } from './context/alert/AlertState'
+import { LocalstorageState } from './context/localstorage/LocalstorageState';
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <LocalstorageState>
+      <AlertState>
+        <BrowserRouter>
+          <Navbar />
+          <div className="container pt-4">
+            <Alert />
+            <Switch>
+              <Route path={'/'} exact component={Login} />
+              <Route path={'/Terminals'} component={Terminals} />
+              <Route path={'/Buyers'} component={Buyers} />
+            </Switch>
+          </div>
+        </BrowserRouter>
+      </AlertState>
+    </LocalstorageState>
   );
 }
 
