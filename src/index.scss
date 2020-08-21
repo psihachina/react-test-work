@@ -14,3 +14,39 @@ code {
     monospace;
 }
 
+.alert-enter {
+  opacity: 0;
+}
+
+.alert-enter-active {
+  transition: opacity 500ms ease-out;
+  opacity: 1;
+}
+
+.alert-exit-active {
+  transition: opacity 350ms ease-out;
+  opacity: 0;
+}
+
+.terminal-exit-active {
+  animation: terminal 800ms ease-out forwards;
+}
+
+.terminal-enter-active {
+  animation: terminal 800ms ease-out alternate-reverse;
+}
+
+@keyframes terminal {
+  0% {
+    translate: translateX(0);
+  }
+  30% {
+    opacity: 0.7;
+    transform: translateX(30px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(-200px);
+  }
+
+}
