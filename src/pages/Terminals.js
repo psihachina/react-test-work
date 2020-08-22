@@ -12,7 +12,7 @@ export const Terminals = () => {
         fetchTerminals()
         // eslint-disable-next-line
     }, [])
-
+    
     return (
         <Fragment>
             <h1>Терминалы</h1>

@@ -1,11 +1,13 @@
 import React, { useReducer } from 'react'
+import axios from 'axios'
 import { LocalstorageContext } from './localstorageContext'
 import { localstorageReducer } from './localstorageReducer'
-import { SHOW_LOADER, REMOVE_TERMINAL, FETCH_TERMINAL, ADD_TERMINAL } from '../types'
+import { SHOW_LOADER, REMOVE_TERMINAL, FETCH_TERMINAL, ADD_TERMINAL, FETCH_BUYER } from '../types'
 
 export const LocalstorageState = ({ children }) => {
     const initialState = {
         terminals: [],
+        buyers: [],
         loading: false
     }
 
@@ -13,22 +15,33 @@ export const LocalstorageState = ({ children }) => {
 
     const showLoader = () => dispatch({ type: SHOW_LOADER })
 
-    const fetchTerminals = () => {
+    const fetchTerminals = async () => {
         showLoader()
-        const res = JSON.parse(localStorage.getItem("terminals"))
-        if (res == null) {
-            console.log(typeof(res));
-            console.log(res);
-           return
-        }
-        const payload = Object.keys(res).map(key => {
+
+
+        const res = await axios.get('https://json-server-psih.herokuapp.com/terminals');
+        console.log(res.data);
+        const payload = await Object.keys(res.data).map(key => {
             return {
-                ...res[key],
+                ...res.data[key],
                 id: key
             }
         })
-        dispatch({ type: FETCH_TERMINAL, payload })
-        console.log(res);
+        await dispatch({ type: FETCH_TERMINAL, payload })
+    }
+
+    const fetchBuyers = async () => {
+        showLoader()
+
+        const res = await axios.get('https://json-server-psih.herokuapp.com/buyers');
+
+        const payload = await Object.keys(res.data).map(key => {
+            return {
+                ...res.data[key],
+                id: key
+            }
+        })
+        await dispatch({ type: FETCH_BUYER, payload })
     }
 
     const addTerminal = async (title, desc) => {
@@ -37,27 +50,11 @@ export const LocalstorageState = ({ children }) => {
         }
 
         try {
-            let terminals = JSON.parse(localStorage.getItem("terminals"))
-
-            console.log(typeof(terminals));
-
-            if ((typeof(terminals) == String || undefined) || terminals == null) {
-                console.log('op');
-                terminals = []
-            }
-
-            terminals.push(terminal)
-
-            console.log(terminals);
-
-            localStorage.setItem("terminals", JSON.stringify(terminals))
-
-
-            var res = terminals[terminals.length - 1]
-
+            const res = await axios.post('https://json-server-psih.herokuapp.com/terminals', terminal)
+            console.log(res);
             const payload = {
                 ...terminal,
-                id: res.title
+                id: res.data.id
             }
             dispatch({
                 type: ADD_TERMINAL,
@@ -68,12 +65,11 @@ export const LocalstorageState = ({ children }) => {
         }
     }
 
-    const removeTerminal = id => {
-        var terminals = JSON.parse(localStorage.getItem("terminals"))
-        terminals = terminals.map(function(e) { return e; }).filter(terminal => terminal.title != id)
-        localStorage.setItem("terminals", JSON.stringify(terminals))
-        console.log(terminals);
-        
+    const removeTerminal = async id => {
+        console.log(12);
+
+        const res = await axios.delete(`https://json-server-psih.herokuapp.com/terminals/${id}`)
+        console.log(res);
         dispatch({
             type: REMOVE_TERMINAL,
             payload: id
@@ -82,9 +78,10 @@ export const LocalstorageState = ({ children }) => {
 
     return (
         <LocalstorageContext.Provider value={{
-            showLoader, addTerminal, removeTerminal, fetchTerminals,
+            showLoader, addTerminal, removeTerminal, fetchTerminals, fetchBuyers,
             loading: state.loading,
-            terminals: state.terminals
+            terminals: state.terminals,
+            buyers: state.buyers
         }}>
             {children}
         </LocalstorageContext.Provider>

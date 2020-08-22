@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
 import { Login } from './pages/Login';
 import { Terminals } from './pages/Terminals';
 import { Buyers } from './pages/Buyers';
@@ -9,6 +9,26 @@ import { AlertState } from './context/alert/AlertState'
 import { LocalstorageState } from './context/localstorage/LocalstorageState';
 
 function App() {
+  function PrivateRoute({ children, ...rest }) {
+    return (
+      <Route
+        {...rest}
+        render={({ location }) =>
+          localStorage.getItem("auth") ? (
+            children
+          ) : (
+              <Redirect
+                to={{
+                  pathname: "/",
+                  state: { from: location }
+                }}
+              />
+            )
+        }
+      />
+    );
+  }
+
   return (
     <LocalstorageState>
       <AlertState>
@@ -18,8 +38,12 @@ function App() {
             <Alert />
             <Switch>
               <Route path={'/'} exact component={Login} />
-              <Route path={'/Terminals'} component={Terminals} />
-              <Route path={'/Buyers'} component={Buyers} />
+              <PrivateRoute path={'/Terminals'}>
+                <Terminals />
+              </PrivateRoute>
+              <PrivateRoute path={'/Buyers'}>
+                <Buyers />
+              </PrivateRoute>
             </Switch>
           </div>
         </BrowserRouter>
@@ -27,5 +51,7 @@ function App() {
     </LocalstorageState>
   );
 }
+
+
 
 export default App;

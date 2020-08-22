@@ -1,13 +1,23 @@
-import React from 'react'
+import React, { useState, useEffect } from 'react'
 import { NavLink } from 'react-router-dom'
 
-export const Navbar = () => (
-    <div className="bg-secondary">
-        <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
-            <div className="nav-brand">Avatar</div>
-        </nav>
-        <nav className="navbar navbar-expand-lg navbar-light bg-light justify-content-center">
-            <ul className="navbar-nav justify-content-center">
+export const Navbar = () => {
+    const [img] = useState(localStorage.getItem('auth'))
+
+    return (
+        <nav class="navbar navbar-light navbar-expand-sm bg-light justify-content-md-center justify-content-start">
+            <ul class="navbar-nav mx-auto text-center text-left">
+                <li className="nav-item order-3 order-sm-0">
+                    <NavLink
+                        className="nav-link"
+                        to="/Buyers"
+                    >
+                        Покупатели
+                        </NavLink>
+                </li>
+                <li class="nav-item my-auto">
+                    <a class="nav-link navbar-brand mx-0 d-none d-inline" href=""><img alt="avatar" src={img} width="40" height="40" /></a>
+                </li>
                 <li className="nav-item">
                     <NavLink
                         className="nav-link"
@@ -15,17 +25,9 @@ export const Navbar = () => (
                         exact
                     >
                         Терминалы
-                </NavLink>
-                </li>
-                <li className="nav-item">
-                    <NavLink
-                        className="nav-link"
-                        to="/Buyers"
-                    >
-                        Покупатели
-                    </NavLink>
+                        </NavLink>
                 </li>
             </ul>
         </nav>
-    </div>
-)
+    )
+}

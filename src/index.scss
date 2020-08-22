@@ -32,8 +32,40 @@ code {
   animation: terminal 800ms ease-out forwards;
 }
 
+.buyer-enter {
+  opacity: 0;
+  transform: scale(0.9);
+}
+.buyer-enter-active {
+  opacity: 1;
+  transform: translateX(0);
+  transition: opacity 300ms, transform 300ms;
+}
+.buyer-exit {
+  opacity: 1;
+}
+.buyer-exit-active {
+  opacity: 0;
+  transform: scale(0.9);
+  transition: opacity 300ms, transform 300ms;
+}
+
 .terminal-enter-active {
   animation: terminal 800ms ease-out alternate-reverse;
+}
+
+@keyframes buyer {
+  0% {
+    translate: translateX(0);
+  }
+  30% {
+    opacity: 0.7;
+    transform: translateX(-100px);
+  }
+  100%{
+    opacity: 0;
+    transform: translateX(-200px);
+  }
 }
 
 @keyframes terminal {

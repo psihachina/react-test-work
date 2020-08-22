@@ -4,7 +4,7 @@ import { TransitionGroup, CSSTransition } from 'react-transition-group'
 export const TerminalList = ({ terminals, onRemove }) => {
     return (
         <TransitionGroup component="ul" className="list-group mt-3">
-            {terminals.map(terminal => (
+            {terminals && terminals.map(terminal => (
                 <CSSTransition
                     key={terminal.id}
                     classNames={'terminal'}
