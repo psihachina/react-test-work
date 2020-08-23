@@ -5,10 +5,38 @@ import { Terminals } from './pages/Terminals';
 import { Buyers } from './pages/Buyers';
 import { Navbar } from './components/Navbar'
 import { Alert } from './components/Alert';
+import { Footer } from './components/Footer';
 import { AlertState } from './context/alert/AlertState'
 import { LocalstorageState } from './context/localstorage/LocalstorageState';
 
+
+
 function App() {
+
+  const DefaultRoutes = () => {
+    return (
+      <div>
+        <Navbar />
+        <AlertState>
+          <Alert />
+          <Switch>
+            <div className="container pt-4">
+              <div className="content">
+                <PrivateRoute path={'/Terminals'}>
+                  <Terminals />
+                </PrivateRoute>
+                <PrivateRoute path={'/Buyers'}>
+                  <Buyers />
+                </PrivateRoute>
+              </div>
+            </div>
+          </Switch>
+        </AlertState>
+        <Footer />
+      </div>
+    );
+  };
+
   function PrivateRoute({ children, ...rest }) {
     return (
       <Route
@@ -31,23 +59,12 @@ function App() {
 
   return (
     <LocalstorageState>
-      <AlertState>
-        <BrowserRouter>
-          <Navbar />
-          <div className="container pt-4">
-            <Alert />
-            <Switch>
-              <Route path={'/'} exact component={Login} />
-              <PrivateRoute path={'/Terminals'}>
-                <Terminals />
-              </PrivateRoute>
-              <PrivateRoute path={'/Buyers'}>
-                <Buyers />
-              </PrivateRoute>
-            </Switch>
-          </div>
-        </BrowserRouter>
-      </AlertState>
+      <BrowserRouter>
+        <Switch>
+          <Route path={'/'} exact component={Login} />
+          <Route component={DefaultRoutes} />
+        </Switch>
+      </BrowserRouter>
     </LocalstorageState>
   );
 }

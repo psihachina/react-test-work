@@ -40,7 +40,7 @@ export const Form = () => {
                     onChange={e => setDesc(e.target.value)}
                 ></textarea>
             </div>
-            <button className="btn btn-primary" type="submit">Добавить</button>
+            <button className="btn btn-light" type="submit">Добавить</button>
         </form>
     )
 }

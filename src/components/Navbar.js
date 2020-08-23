@@ -16,7 +16,7 @@ export const Navbar = () => {
                         </NavLink>
                 </li>
                 <li class="nav-item my-auto">
-                    <a class="nav-link navbar-brand mx-0 d-none d-inline" href=""><img alt="avatar" src={img} width="40" height="40" /></a>
+                    <a class="nav-link navbar-brand mx-0 d-none d-inline" onClick={(e) => { localStorage.removeItem("auth") }} href="/"><img alt="avatar" src={img} width="40" height="40" /></a>
                 </li>
                 <li className="nav-item">
                     <NavLink
